@@ -1,0 +1,18 @@
+package org.example.webstore;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@SpringBootApplication
+@EntityScan(basePackages = "org.example.webstore.entity")
+@EnableJpaRepositories(basePackages = "org.example.webstore.repository")
+@EnableScheduling
+public class SpringBootWebstoreApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootWebstoreApplication.class, args);
+    }
+}
