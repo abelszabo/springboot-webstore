@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  postgres:
+    #image: postgres:16
+    image: postgres:16.4
+    container_name: pg16-webstore
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: springboot-webstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pg16-data:/var/lib/postgresql/data
+      #- C:/work/practice/storage-data/pg16-data:/var/lib/postgresql/data
+
+volumes:
+  pg16-data:
