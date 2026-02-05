@@ -6,7 +6,8 @@ spring:
     name: spring-boot-webstore
 
   datasource: # DataSource Configuration
-    url: jdbc:postgresql://localhost:5432/springboot-webstore
+#    url: jdbc:postgresql://localhost:5432/springboot-webstore
+    url: jdbc:postgresql://localhost:5433/springboot-webstore
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
@@ -25,6 +26,10 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+#    url: jdbc:postgresql://localhost:5432/springboot-webstore
+#    user: postgres
+#    password: password
+#    driver-class-name: org.postgresql.Driver
 
   rabbitmq:
     host: localhost
