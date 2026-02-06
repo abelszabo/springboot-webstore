@@ -33,7 +33,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/actuator/**",
                                 "/health",
-                                "/info"
+                                "/info",
+                                "/api/products/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -55,8 +56,9 @@ public class SecurityConfig {
 
         // ⚠️ Frontend domain / IP
         config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "https://frontend.example.com"
+                //"http://localhost:3000",
+                //"https://frontend.example.com",
+                "http://localhost:4200"
         ));
 
         config.setAllowedMethods(List.of(
