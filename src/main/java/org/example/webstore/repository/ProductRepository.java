@@ -11,6 +11,7 @@ public interface ProductRepository
     @Query("""
         select p from Product p
         join fetch p.category
+        order by p.id
     """)
     List<Product> findAllWithCategory();
 }

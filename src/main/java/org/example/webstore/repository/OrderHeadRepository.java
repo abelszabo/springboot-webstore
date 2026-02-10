@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface OrderHeadRepository
         extends BaseRepository<OrderHead, Long>, OrderHeadRepositoryCustom {
 
+    @Query("select o from OrderHead o where o.orderNumber = :orderNumber")
     Optional<OrderHead> findByOrderNumber(String orderNumber);
 
     List<OrderHead> findByUserIdOrderByCreatedAtDesc(Long userId);

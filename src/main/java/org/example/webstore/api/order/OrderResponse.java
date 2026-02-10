@@ -1,4 +1,4 @@
-package org.example.webstore.api.product;
+package org.example.webstore.api.order;
 
 public record OrderResponse(
         String orderNumber

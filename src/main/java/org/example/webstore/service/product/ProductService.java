@@ -28,7 +28,8 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductResponse> findAllWithCategory() {
-        return productRepository.findAll()
+        //return productRepository.findAll()
+        return productRepository.findAllWithCategory()
                 .stream()
                 .map(p -> new ProductResponse(
                         p.getId(),
