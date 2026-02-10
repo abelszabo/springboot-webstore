@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "order_item")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class OrderItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

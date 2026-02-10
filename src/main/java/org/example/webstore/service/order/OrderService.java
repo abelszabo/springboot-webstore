@@ -2,6 +2,7 @@ package org.example.webstore.service.order;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.example.webstore.api.product.OrderResponse;
 import org.example.webstore.entity.OrderHead;
 import org.example.webstore.entity.enums.OrderStatus;
 import org.example.webstore.repository.OrderHeadRepository;
@@ -24,6 +25,21 @@ public class OrderService {
                         InventoryService inventoryService) {
         this.orderHeadRepository = orderHeadRepository;
         this.inventoryService = inventoryService;
+    }
+
+    @Transactional
+    public OrderResponse newOrder() {
+        //return this.orderHeadRepository.newOrder();
+
+        String orderNumber = "ORDER-" + Math.abs(UUID.randomUUID().hashCode());
+
+        OrderHead orderHead = new OrderHead();
+        orderHead.newOrder();
+        orderHead.setOrderNumber(orderNumber);
+
+        this.orderHeadRepository.save(orderHead);
+
+        return new OrderResponse(orderNumber);
     }
 
     @Transactional

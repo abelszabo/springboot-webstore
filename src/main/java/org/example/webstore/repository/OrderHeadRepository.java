@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface OrderHeadRepository
-        extends BaseRepository<OrderHead, Long> {
+        extends BaseRepository<OrderHead, Long>, OrderHeadRepositoryCustom {
 
     Optional<OrderHead> findByOrderNumber(String orderNumber);
 

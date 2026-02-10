@@ -18,7 +18,8 @@ import java.util.List;
         indexes = @Index(name = "ux_order_number", columnList = "orderNumber", unique = true)
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class OrderHead extends BaseEntity {
 
     @Column(nullable = false, unique = true)
@@ -56,6 +57,15 @@ public class OrderHead extends BaseEntity {
     /* =====================
        DOMAIN COMMANDS
        ===================== */
+
+    public void newOrder() {
+        if (null != status && status != OrderStatus.DRAFT) {
+            throw new IllegalStateException(
+                    "The new order cannot have a status other than DRAFT"
+            );
+        }
+        this.status = OrderStatus.DRAFT;
+    }
 
     public void confirmCheckout() {
         if (status != OrderStatus.DRAFT) {

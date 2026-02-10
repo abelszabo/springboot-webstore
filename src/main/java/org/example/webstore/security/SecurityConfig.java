@@ -34,7 +34,8 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/health",
                                 "/info",
-                                "/api/products/**"
+                                "/api/products/**",
+                                "/api/order/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
