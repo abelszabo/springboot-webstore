@@ -2,6 +2,7 @@ package org.example.webstore.service.product;
 
 import org.example.webstore.api.product.ProductResponse;
 import org.example.webstore.entity.Product;
+import org.example.webstore.exception.ItemNotFoundException;
 import org.example.webstore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductResponse findById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item not found with id: " + id));
+                .orElseThrow(() -> new ItemNotFoundException("Item not found with id: " + id));
 
         return new ProductResponse(
                 product.getId(),

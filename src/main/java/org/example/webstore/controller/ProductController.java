@@ -4,6 +4,7 @@ import org.example.webstore.api.product.ProductResponse;
 import org.example.webstore.entity.Product;
 import org.example.webstore.repository.ProductRepository;
 import org.example.webstore.service.product.ProductService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponse> getAllProducts() {
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
         //return productService.findAll();
-        return productService.findAllWithCategory();
+        return ResponseEntity.ok(productService.findAllWithCategory());
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getProductById(@PathVariable long id) {
-        return productService.findById(id);
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable long id) {
+        return ResponseEntity.ok(productService.findById(id));
     }
 }

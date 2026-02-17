@@ -66,12 +66,21 @@ public class OrderService {
             throw new IllegalArgumentException("Quantity should be greater than zero");
         }
 
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrderHead(orderHead);
-        orderItem.setProduct(product);
-        orderItem.setProductName(product.getName());
-        orderItem.setUnitPrice(product.getPrice());
-        orderItem.setQuantity(request.quantity());
+        var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdate(orderHead.getId(), product.getId());
+        //var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdateNative(orderHead.getId(), product.getId());
+        OrderItem orderItem;
+
+        if (orderItemOpt.isPresent()) {
+            orderItem = orderItemOpt.get();
+            orderItem.setQuantity(orderItem.getQuantity() + request.quantity());
+        } else {
+            orderItem = new OrderItem();
+            orderItem.setOrderHead(orderHead);
+            orderItem.setProduct(product);
+            orderItem.setProductName(product.getName());
+            orderItem.setUnitPrice(product.getPrice());
+            orderItem.setQuantity(request.quantity());
+        }
 
         orderItemRepository.save(orderItem);
     }

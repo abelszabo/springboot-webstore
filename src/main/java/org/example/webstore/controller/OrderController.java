@@ -3,6 +3,7 @@ package org.example.webstore.controller;
 import org.example.webstore.api.order.NewOrderItemRequest;
 import org.example.webstore.api.order.OrderResponse;
 import org.example.webstore.service.order.OrderService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,13 +21,15 @@ public class OrderController {
     }
 
     @PostMapping("/new-order")
-    public OrderResponse newOrder() {
-        return orderService.newOrder();
+    public ResponseEntity<OrderResponse> newOrder() {
+        //return ResponseEntity.ok().body(orderService.newOrder());
+        return ResponseEntity.ok(orderService.newOrder());
     }
 
     @PostMapping("/add-item")
-    public void addItem(@RequestBody NewOrderItemRequest request) { // TODO @Valid
+    public ResponseEntity<Void> addItem(@RequestBody NewOrderItemRequest request) { // TODO @Valid
         orderService.addOrderItem(request);
+        return ResponseEntity.noContent().build();
     }
 
 }
