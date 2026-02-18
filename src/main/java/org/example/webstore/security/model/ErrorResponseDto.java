@@ -1,5 +1,15 @@
 package org.example.webstore.security.model;
 
-public record ErrorResponseDto (Integer status, String errorCode, String errorMessage, String path,
-                                String exceptionString, Exception ex){
+import java.time.Instant;
+import java.util.List;
+
+public record ErrorResponseDto (Instant timestamp,
+                                Integer status,
+                                String errorCode,
+                                String errorMessage,
+                                String ms,
+                                String path,
+                                String errorId,
+                                String exceptionString,
+                                List<String> stackTrace){
 }

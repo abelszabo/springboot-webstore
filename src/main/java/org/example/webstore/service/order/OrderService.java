@@ -2,11 +2,13 @@ package org.example.webstore.service.order;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.example.webstore.api.order.NewOrderItemRequest;
+import org.example.webstore.api.order.OrderItemRequest;
+import org.example.webstore.api.order.OrderItemResponse;
 import org.example.webstore.api.order.OrderResponse;
 import org.example.webstore.entity.OrderHead;
 import org.example.webstore.entity.OrderItem;
 import org.example.webstore.entity.enums.OrderStatus;
+import org.example.webstore.exception.ItemNotFoundException;
 import org.example.webstore.repository.OrderHeadRepository;
 import org.example.webstore.repository.OrderItemRepository;
 import org.example.webstore.repository.ProductRepository;
@@ -53,36 +55,43 @@ public class OrderService {
     }
 
     @Transactional
-    public void addOrderItem(NewOrderItemRequest request) {
+    public OrderItemResponse addOrderItem(OrderItemRequest request) {
         System.out.println(request);
 
         var orderHead = orderHeadRepository.findByOrderNumber(request.orderNumber())
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new ItemNotFoundException("Order not found"));
 
         var product = productRepository.findById(request.productId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ItemNotFoundException("Product not found"));
 
-        if (request.quantity() < 1) { // TODO @Valid
+        if (null == request.quantity() || request.quantity() < 1) { // TODO @Valid
             throw new IllegalArgumentException("Quantity should be greater than zero");
         }
 
-        var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdate(orderHead.getId(), product.getId());
-        //var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdateNative(orderHead.getId(), product.getId());
+        //Long productId = product.getId();
+
+        //var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdate(orderHead.getId(), productId);
+        var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdate(orderHead, product);
+        //var orderItemOpt = orderItemRepository.findByOrderAndProductForUpdateNative(orderHead.getId(), productId);
         OrderItem orderItem;
+        int quantity = request.quantity();
 
         if (orderItemOpt.isPresent()) {
             orderItem = orderItemOpt.get();
-            orderItem.setQuantity(orderItem.getQuantity() + request.quantity());
+            quantity += orderItem.getQuantity();
         } else {
             orderItem = new OrderItem();
             orderItem.setOrderHead(orderHead);
             orderItem.setProduct(product);
             orderItem.setProductName(product.getName());
             orderItem.setUnitPrice(product.getPrice());
-            orderItem.setQuantity(request.quantity());
         }
 
+        orderItem.setQuantity(quantity);
         orderItemRepository.save(orderItem);
+
+        String status = "OK"; // TODO
+        return new OrderItemResponse(product.getId(), status, quantity);
     }
 
     @Transactional
